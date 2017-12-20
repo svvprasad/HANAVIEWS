@@ -1,0 +1,185 @@
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- RR_BUSINESS_UNIT - EC Business Units
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+DROP VIEW INTEGRATIONS.RR_BUSINESS_UNIT ;
+
+CREATE VIEW INTEGRATIONS.RR_BUSINESS_UNIT
+AS SELECT
+       o.object_id                                       AS BU_id,
+       o.object_code                                     AS BU_code,
+       oa.name                                           AS BU_name,
+       o.description                                     AS BU_description,
+       CAST(o.start_date as DATE)                        AS start_date,
+       CAST(o.end_date as DATE)                          AS end_date,
+       CAST(oa.daytime as DATE)                          AS effective_date,
+       CAST(oa.end_date as DATE)                         AS expiry_date,
+       o.country_id                                      AS country_id,
+       oa.comments                                       AS comments,
+       oa.record_status                                  AS record_status,
+       oa.created_by                                     AS created_by,
+       oa.created_date                                   AS created_date,
+       oa.last_updated_by                                AS last_updated_by,
+       oa.last_updated_date                              AS last_updated_date
+FROM  SRC_EC.business_unit  o 
+INNER JOIN SRC_EC.business_unit_version oa
+    ON  o.object_id    = oa.object_id
+WITH READ ONLY ;
+
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- RR_CONTRACT_AREA - EC Contract Area 
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+DROP VIEW INTEGRATIONS.RR_CONTRACT_AREA ;
+
+CREATE VIEW INTEGRATIONS.RR_CONTRACT_AREA
+AS SELECT
+       o.object_id                                       AS contract_area_id,
+       o.object_code                                     AS contract_area_code,
+       oa.name                                           AS contract_area_name,
+       o.description                                     AS contract_area_description,
+       CAST(o.start_date as DATE)                        AS start_date,
+       CAST(o.end_date as DATE)                          AS end_date,
+       CAST(oa.daytime as DATE)                          AS effective_date,
+       CAST(oa.end_date as DATE)                         AS expiry_date,
+       oa.business_unit_id                               AS bu_id,
+       oa.comments                                       AS comments,
+       oa.record_status                                  AS record_status,
+       oa.created_by                                     AS created_by,
+       oa.created_date                                   AS created_date,
+       oa.last_updated_by                                AS last_updated_by,
+       oa.last_updated_date                              AS last_updated_date
+FROM  SRC_EC.contract_area  o 
+INNER JOIN SRC_EC.contract_area_version oa
+    ON  o.object_id    = oa.object_id
+WITH READ ONLY ;
+
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- RR_CONTRACT - EC Contract
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+DROP VIEW INTEGRATIONS.RR_CONTRACT ;
+
+CREATE VIEW INTEGRATIONS.RR_CONTRACT
+AS SELECT
+       o.object_id                                       AS contract_id,
+       o.object_code                                     AS contract_code,
+       oa.name                                           AS contract_name,
+       o.description                                     AS contract_description,
+       CAST(o.start_date as DATE)                        AS start_date,
+       CAST(o.end_date as DATE)                          AS end_date,
+       CAST(oa.daytime as DATE)                          AS effective_date,
+       CAST(oa.end_date as DATE)                         AS expiry_date,
+       oa.sort_order                                     AS sort_order,
+       oa.calc_rule_id                                   AS calc_rule_id,
+       oa.calc_seq                                       AS calc_seq,
+       oa.calc_group                                     AS calc_group,
+       oa.production_day_id                              AS production_day_id,
+       oa.financial_code                                 AS financial_code,
+       oa.contract_area_id                               AS contract_area_id,
+       oa.contract_area_code                             AS contract_area_code,
+       oa.pricing_currency_id                            AS pricing_currency_id,
+       oa.comments                                       AS comments,
+       oa.record_status                                  AS record_status,
+       oa.created_by                                     AS created_by,
+       oa.created_date                                   AS created_date,
+       oa.last_updated_by                                AS last_updated_by,
+       oa.last_updated_date                              AS last_updated_date
+FROM  SRC_EC.contract       o 
+INNER JOIN SRC_EC.contract_version oa
+    ON  o.object_id    = oa.object_id
+WITH READ ONLY ;
+
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- RR_FIN_ACCOUNT - EC Financial Accounts
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+DROP VIEW INTEGRATIONS.RR_FIN_ACCOUNT ;
+
+CREATE VIEW INTEGRATIONS.RR_FIN_ACCOUNT 
+AS SELECT
+       fa.object_id                                      AS account_id,
+       fa.object_code                                    AS account_code,
+       fav.name                                          AS account_name,
+       fa.description                                    AS account_description,
+       fav.fin_account_cat_code                          AS account_category,
+       fav.fin_cost_object_type                          AS cost_object_type,
+       fav.gl_account                                    AS gl_account,
+       fav.text_1                                        AS subledger_reqd_ind,
+       fav.text_4                                        AS units_reqd_ind,
+       fav.text_2                                        AS additional_DR_account,
+       fav.text_3                                        AS additional_CR_account,
+       CAST(fa.start_date as DATE)                       AS start_date,
+       CAST(fa.end_date as DATE)                         AS end_date,
+       CAST(fav.daytime as DATE)                         AS effective_date,
+       CAST(fav.end_date as DATE)                        AS expiry_date,
+       fav.record_status                                 AS record_status,
+       fav.created_by                                    AS created_by,
+       fav.created_date                                  AS created_date,
+       fav.last_updated_by                               AS last_updated_by,
+       fav.last_updated_date                             AS last_updated_date
+FROM  SRC_EC.fin_account    fa
+INNER JOIN SRC_EC.fin_account_version fav
+    ON  fa.object_id   = fav.object_id
+where exists (select upper(current_user) from dummy)
+WITH READ ONLY ;
+
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- RR_COST_CENTRE - EC Cost Centres
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+DROP VIEW INTEGRATIONS.RR_COST_CENTRE ;
+
+CREATE VIEW INTEGRATIONS.RR_COST_CENTRE 
+AS SELECT
+       o.object_id                                       AS cost_centre_id,
+       o.object_code                                     AS cost_centre_code,
+       oa.name                                           AS cost_centre_name,
+       o.description                                     AS cost_centre_description,
+       oa.fin_external_ref                               AS external_reference,
+       oa.comments                                       AS comments,
+       CAST(o.start_date as DATE)                        AS start_date,
+       CAST(o.end_date as DATE)                          AS end_date,
+       CAST(oa.daytime as DATE)                          AS effective_date,
+       CAST(oa.end_date as DATE)                         AS expiry_date,
+       oa.record_status                                  AS record_status,
+       oa.created_by                                     AS created_by,
+       oa.created_date                                   AS created_date,
+       oa.last_updated_by                                AS last_updated_by,
+       oa.last_updated_date                              AS last_updated_date
+FROM  SRC_EC.fin_cost_center   o
+INNER JOIN SRC_EC.fin_cost_center_version oa
+    ON  o.object_id   = oa.object_id
+where exists (select upper(current_user) from dummy)
+WITH READ ONLY ;
+
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- RR_AFE - EC AFE's
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+DROP VIEW INTEGRATIONS.RR_AFE ;
+
+CREATE VIEW INTEGRATIONS.RR_AFE
+AS SELECT
+       o.object_id                                       AS afe_id,
+       o.object_code                                     AS afe_code,
+       oa.name                                           AS afe_name,
+       o.description                                     AS afe_description,
+       oa.wbs                                            AS wbs,
+       oa.fin_external_ref                               AS external_reference,
+       oa.comments                                       AS comments,
+       CAST(o.start_date as DATE)                        AS start_date,
+       CAST(o.end_date as DATE)                          AS end_date,
+       CAST(oa.daytime as DATE)                          AS effective_date,
+       CAST(oa.end_date as DATE)                         AS expiry_date,
+       oa.record_status                                  AS record_status,
+       oa.created_by                                     AS created_by,
+       oa.created_date                                   AS created_date,
+       oa.last_updated_by                                AS last_updated_by,
+       oa.last_updated_date                              AS last_updated_date
+FROM  SRC_EC.fin_wbs           o
+INNER JOIN SRC_EC.fin_wbs_version oa
+    ON  o.object_id   = oa.object_id
+where exists (select upper(current_user) from dummy)
+WITH READ ONLY ;
+
+grant select on INTEGRATIONS.RR_BUSINESS_UNIT             to PDM_READ;
+grant select on INTEGRATIONS.RR_CONTRACT_AREA             to PDM_READ;
+grant select on INTEGRATIONS.RR_CONTRACT                  to PDM_READ;
+grant select on INTEGRATIONS.RR_FIN_ACCOUNT               to PDM_READ;
+grant select on INTEGRATIONS.RR_COST_CENTRE               to PDM_READ;
+grant select on INTEGRATIONS.RR_AFE                       to PDM_READ;
